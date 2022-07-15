@@ -1,0 +1,3 @@
+/Users/disenzhang/Projects/OpenCodeProj/CodeSlice-Github/network/SampleSocket/Client/build/CMakeFiles/SocketClient.dir
+/Users/disenzhang/Projects/OpenCodeProj/CodeSlice-Github/network/SampleSocket/Client/build/CMakeFiles/edit_cache.dir
+/Users/disenzhang/Projects/OpenCodeProj/CodeSlice-Github/network/SampleSocket/Client/build/CMakeFiles/rebuild_cache.dir
