@@ -11,32 +11,29 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-
 @protocol AudioPlayerDelegate <NSObject>
 
--(void) onPlayToEnd;
--(void) onPlayTimeUpdate:(float)time;
+- (void)onPlayToEnd;
+- (void)onPlayTimeUpdate:(float)time;
 
 @end
 
-
 @interface AudioPlayer : NSObject {
-    
-    @public
+@public
     AudioPlayState mAqState;
 }
 
 - (instancetype)initWithPCMFile:(NSString *)path delegate:(id<AudioPlayerDelegate>)delegate;
 
--(void) play;
--(void) pause;
--(void) stop;
--(void) resume;
--(void) playFromOffsetms:(UInt32)timems;
+- (void)play;
+- (void)pause;
+- (void)stop;
+- (void)resume;
+- (void)playFromOffsetms:(UInt32)timems;
 
--(float) getCurrentTime;
+- (float)getCurrentTime;
 
--(BOOL) isPlaying;
+- (BOOL)isPlaying;
 
 @end
 

@@ -8,28 +8,32 @@
 
 #import <Foundation/Foundation.h>
 #import "AudioServiceDefine.h"
+#import "RealtimeAnalyser.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol AudioRecorderDelegate <NSObject>
+@protocol AudioRecorderDelegate
 
 - (void)onRecordTimeUpdate:(float)recordTime;
-- (void)onAmplitudesUpdate:(NSArray *)arrAmplitudes Recorder:(id)sender;
 
 @end
 
 @interface AudioRecorder : NSObject {
-    @public
+@public
     AudioRecordState mAqState;
 }
 
-@property(nonatomic, weak) id<AudioRecorderDelegate> delegate;
+@property (nonatomic, strong) RealtimeAnalyser *analyzer;
+@property (nonatomic, weak) id<AudioRecorderDelegate> delegate;
 
 - (instancetype)initWithWritePath:(NSString *)nsWritePath sampleRate:(int)sampleRate fftSize:(int)fftSize;
+
 - (void)start;
 - (void)stop;
+
 - (void)pause;
 - (void)resume;
+
 - (NSArray *)getAmplitudes;
 - (NSArray *)getFFTData;
 

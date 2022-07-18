@@ -12,28 +12,26 @@
 
 @implementation FileHelper
 
-+ (BOOL) fileExist:(NSString*)nsFilePath {
-    if([nsFilePath length] == 0) {
++ (BOOL)fileExist:(NSString *)nsFilePath {
+    if ([nsFilePath length] == 0) {
         NSLog(@"file exist error, nsFilePath nil");
         return NO;
     }
-    
-    struct stat temp;
-    return lstat(nsFilePath.UTF8String, &temp) == 0;
+
+    return access(nsFilePath.UTF8String, F_OK | R_OK) == 0;
 }
 
-+ (BOOL) createFile:(NSString*)nsFilePath {
-    
++ (BOOL)createFile:(NSString *)nsFilePath {
     if ([nsFilePath length] == 0) {
         return NO;
     }
-    
-    if([[NSFileManager defaultManager] fileExistsAtPath:nsFilePath]) {
+
+    if ([[NSFileManager defaultManager] fileExistsAtPath:nsFilePath]) {
         return YES;
     }
-    
+
     BOOL bCreated = [[NSFileManager defaultManager] createFileAtPath:nsFilePath contents:nil attributes:nil];
-    if(bCreated) {
+    if (bCreated) {
         return YES;
     }
 
@@ -41,25 +39,24 @@
     if ([nsFilePath length] == 0) {
         return NO;
     }
-    
+
     NSError *err;
     bCreated = [[NSFileManager defaultManager] createDirectoryAtPath:nsPath withIntermediateDirectories:YES attributes:nil error:&err];
-    if(bCreated == NO) {
+    if (bCreated == NO) {
         NSLog(@"create file path:%@ fail:%@", nsPath, [err localizedDescription]);
         return NO;
     }
-    
+
     bCreated = [[NSFileManager defaultManager] createFileAtPath:nsFilePath contents:nil attributes:nil];
-    if(bCreated) {
+    if (bCreated) {
         return YES;
     }
-    
+
     NSLog(@"create file path:%@ fail.", nsFilePath);
     return NO;
 }
 
-
-+ (void) removeFile:(NSString*)nsFilePath {
++ (void)removeFile:(NSString *)nsFilePath {
     [[NSFileManager defaultManager] removeItemAtPath:nsFilePath error:nil];
 }
 
@@ -70,34 +67,31 @@
 }
 
 + (NSString *)getAudioWriteFilePath {
-
     NSString *nsCachePath = [self getAudioDirPath];
     NSDateFormatter *dateFmt = [[NSDateFormatter alloc] init];
     [dateFmt setDateFormat:@"yyyyMMDD_HHmmss"];
     NSString *nsTimeInString = [dateFmt stringFromDate:[NSDate date]];
-    
+
     NSString *nsWritePath = [NSString stringWithFormat:@"%@/%@.pcm", nsCachePath, nsTimeInString];
-    
+
     return nsWritePath;
 }
-
 
 + (NSArray *)getAllFilesWithDirPath:(NSString *)dirPath {
     if ([self fileExist:dirPath] == NO) {
         return nil;
     }
-    
+
     NSMutableArray *arrFilePath = [NSMutableArray array];
-    
-    NSArray *filePathsArray = [[NSFileManager defaultManager] subpathsOfDirectoryAtPath:dirPath  error:nil];
+
+    NSArray *filePathsArray = [[NSFileManager defaultManager] subpathsOfDirectoryAtPath:dirPath error:nil];
     for (int i = 0; i < filePathsArray.count; i++) {
         [arrFilePath addObject:[dirPath stringByAppendingPathComponent:filePathsArray[i]]];
     }
 
-    NSLog(@"files array %@", arrFilePath);
-    
+    //    NSLog(@"files array %@", arrFilePath);
+
     return arrFilePath;
 }
-
 
 @end

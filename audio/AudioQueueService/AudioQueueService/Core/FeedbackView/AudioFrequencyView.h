@@ -7,13 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "FrequencyView.h"
+#import "FDRecordFeedbackView.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
-@interface AudioFrequencyView : FrequencyView
-
+@interface AudioFrequencyView : FDRecordFeedbackView
 
 @end
-
-NS_ASSUME_NONNULL_END

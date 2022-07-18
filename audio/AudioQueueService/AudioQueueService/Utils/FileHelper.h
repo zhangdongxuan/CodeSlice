@@ -12,10 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface FileHelper : NSObject
 
-+ (BOOL) fileExist:(NSString*)nsFilePath;
-+ (BOOL) createFile:(NSString*)nsFilePath;
-+ (void) removeFile:(NSString*)nsFilePath;
-
++ (BOOL)fileExist:(NSString *)nsFilePath;
++ (BOOL)createFile:(NSString *)nsFilePath;
++ (void)removeFile:(NSString *)nsFilePath;
 
 + (NSString *)getAudioDirPath;
 + (NSString *)getAudioWriteFilePath;

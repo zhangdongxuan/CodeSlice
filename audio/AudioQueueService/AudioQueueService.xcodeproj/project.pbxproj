@@ -7,16 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A62D5CB024AB29D700609FBD /* FrequencyView.m in Sources */ = {isa = PBXBuildFile; fileRef = A62D5CAF24AB29D700609FBD /* FrequencyView.m */; };
 		A633EBAA249A394D0016C3FE /* AudioPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A633EBA9249A394D0016C3FE /* AudioPlayerViewController.m */; };
-		A6528B8E2499C11300382A0D /* AQDumpData.m in Sources */ = {isa = PBXBuildFile; fileRef = A6528B8D2499C11300382A0D /* AQDumpData.m */; };
-		A6557B162462DA8100ED97BC /* AudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A6557B152462DA8100ED97BC /* AudioPlayer.m */; };
 		A656B2BF245AE4D800FF6C89 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A656B2BE245AE4D800FF6C89 /* AppDelegate.m */; };
 		A656B2C5245AE4D800FF6C89 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A656B2C4245AE4D800FF6C89 /* ViewController.m */; };
 		A656B2CA245AE4D900FF6C89 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A656B2C9245AE4D900FF6C89 /* Assets.xcassets */; };
 		A656B2CD245AE4D900FF6C89 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A656B2CB245AE4D900FF6C89 /* LaunchScreen.storyboard */; };
 		A656B2D0245AE4D900FF6C89 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A656B2CF245AE4D900FF6C89 /* main.m */; };
-		A656B2D8245AF46B00FF6C89 /* AudioRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = A656B2D7245AF46B00FF6C89 /* AudioRecorder.m */; };
+		A666D91628844E1100A8E33A /* AudioPlayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = A666D91528844E1100A8E33A /* AudioPlayer.mm */; };
+		A666D91828844E2100A8E33A /* AudioRecorder.mm in Sources */ = {isa = PBXBuildFile; fileRef = A666D91728844E2100A8E33A /* AudioRecorder.mm */; };
+		A666D92428844E4800A8E33A /* FDRecordFDView.mm in Sources */ = {isa = PBXBuildFile; fileRef = A666D91C28844E4800A8E33A /* FDRecordFDView.mm */; };
+		A666D92528844E4800A8E33A /* FDRecordPillar.mm in Sources */ = {isa = PBXBuildFile; fileRef = A666D91D28844E4800A8E33A /* FDRecordPillar.mm */; };
+		A666D92628844E4800A8E33A /* FDRecordFeedbackView.mm in Sources */ = {isa = PBXBuildFile; fileRef = A666D91E28844E4800A8E33A /* FDRecordFeedbackView.mm */; };
+		A666D92728844E4800A8E33A /* AudioFrequencyView.mm in Sources */ = {isa = PBXBuildFile; fileRef = A666D92128844E4800A8E33A /* AudioFrequencyView.mm */; };
+		A666D92A28844E6F00A8E33A /* AQDumpData.mm in Sources */ = {isa = PBXBuildFile; fileRef = A666D92828844E6F00A8E33A /* AQDumpData.mm */; };
+		A666D92B28844E6F00A8E33A /* FileHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = A666D92928844E6F00A8E33A /* FileHelper.mm */; };
+		A666D93128844F2900A8E33A /* AudioBandsInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = A666D92D28844F2900A8E33A /* AudioBandsInfo.m */; };
+		A666D93228844F2900A8E33A /* RealtimeAnalyser.mm in Sources */ = {isa = PBXBuildFile; fileRef = A666D92E28844F2900A8E33A /* RealtimeAnalyser.mm */; };
 		A692D1C9249B56D900E10C4E /* RecorderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A692D1B6249B56D900E10C4E /* RecorderViewController.m */; };
 		A692D1CA249B56D900E10C4E /* AudioPlayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A692D1B8249B56D900E10C4E /* AudioPlayCell.m */; };
 		A692D1CB249B56D900E10C4E /* 01.Halcyon - Runaway (Feat. Valentina Franco) (Heuse Remix).mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A692D1BA249B56D900E10C4E /* 01.Halcyon - Runaway (Feat. Valentina Franco) (Heuse Remix).mp3 */; };
@@ -28,21 +34,14 @@
 		A692D1D1249B56D900E10C4E /* SpectrumView.m in Sources */ = {isa = PBXBuildFile; fileRef = A692D1C3249B56D900E10C4E /* SpectrumView.m */; };
 		A692D1D2249B56D900E10C4E /* RealtimeAnalyzer.m in Sources */ = {isa = PBXBuildFile; fileRef = A692D1C5249B56D900E10C4E /* RealtimeAnalyzer.m */; };
 		A69EF0BB24717831007A3736 /* UIView+EXT.m in Sources */ = {isa = PBXBuildFile; fileRef = A69EF0BA24717831007A3736 /* UIView+EXT.m */; };
-		A69EF0BE24717942007A3736 /* FileHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A69EF0BD24717942007A3736 /* FileHelper.m */; };
-		A6A4FB53249A55790005DAAA /* AudioFrequencyView.m in Sources */ = {isa = PBXBuildFile; fileRef = A6A4FB52249A55790005DAAA /* AudioFrequencyView.m */; };
-		A6F88D8A2498A88000E3ECF7 /* AudioRecorderAnalyzer.m in Sources */ = {isa = PBXBuildFile; fileRef = A6F88D892498A88000E3ECF7 /* AudioRecorderAnalyzer.m */; };
 		A6F88D8D2498A8DD00E3ECF7 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6F88D8C2498A8DD00E3ECF7 /* Accelerate.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		A62D5CAE24AB29D700609FBD /* FrequencyView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FrequencyView.h; sourceTree = "<group>"; };
-		A62D5CAF24AB29D700609FBD /* FrequencyView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FrequencyView.m; sourceTree = "<group>"; };
 		A633EBA8249A394D0016C3FE /* AudioPlayerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioPlayerViewController.h; sourceTree = "<group>"; };
 		A633EBA9249A394D0016C3FE /* AudioPlayerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AudioPlayerViewController.m; sourceTree = "<group>"; };
 		A6528B8C2499C11300382A0D /* AQDumpData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AQDumpData.h; sourceTree = "<group>"; };
-		A6528B8D2499C11300382A0D /* AQDumpData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AQDumpData.m; sourceTree = "<group>"; };
 		A6557B142462DA8100ED97BC /* AudioPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioPlayer.h; sourceTree = "<group>"; };
-		A6557B152462DA8100ED97BC /* AudioPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AudioPlayer.m; sourceTree = "<group>"; };
 		A6557B172462EAE400ED97BC /* AudioServiceDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioServiceDefine.h; sourceTree = "<group>"; };
 		A656B2BA245AE4D800FF6C89 /* AudioQueueService.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AudioQueueService.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A656B2BD245AE4D800FF6C89 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -54,7 +53,22 @@
 		A656B2CE245AE4D900FF6C89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A656B2CF245AE4D900FF6C89 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A656B2D6245AF46B00FF6C89 /* AudioRecorder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioRecorder.h; sourceTree = "<group>"; };
-		A656B2D7245AF46B00FF6C89 /* AudioRecorder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AudioRecorder.m; sourceTree = "<group>"; };
+		A666D91528844E1100A8E33A /* AudioPlayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AudioPlayer.mm; sourceTree = "<group>"; };
+		A666D91728844E2100A8E33A /* AudioRecorder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AudioRecorder.mm; sourceTree = "<group>"; };
+		A666D91C28844E4800A8E33A /* FDRecordFDView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FDRecordFDView.mm; sourceTree = "<group>"; };
+		A666D91D28844E4800A8E33A /* FDRecordPillar.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FDRecordPillar.mm; sourceTree = "<group>"; };
+		A666D91E28844E4800A8E33A /* FDRecordFeedbackView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FDRecordFeedbackView.mm; sourceTree = "<group>"; };
+		A666D91F28844E4800A8E33A /* FDRecordPillar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDRecordPillar.h; sourceTree = "<group>"; };
+		A666D92028844E4800A8E33A /* AudioFrequencyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioFrequencyView.h; sourceTree = "<group>"; };
+		A666D92128844E4800A8E33A /* AudioFrequencyView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AudioFrequencyView.mm; sourceTree = "<group>"; };
+		A666D92228844E4800A8E33A /* FDRecordFDView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDRecordFDView.h; sourceTree = "<group>"; };
+		A666D92328844E4800A8E33A /* FDRecordFeedbackView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDRecordFeedbackView.h; sourceTree = "<group>"; };
+		A666D92828844E6F00A8E33A /* AQDumpData.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AQDumpData.mm; sourceTree = "<group>"; };
+		A666D92928844E6F00A8E33A /* FileHelper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FileHelper.mm; sourceTree = "<group>"; };
+		A666D92D28844F2900A8E33A /* AudioBandsInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioBandsInfo.m; sourceTree = "<group>"; };
+		A666D92E28844F2900A8E33A /* RealtimeAnalyser.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RealtimeAnalyser.mm; sourceTree = "<group>"; };
+		A666D92F28844F2900A8E33A /* AudioBandsInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioBandsInfo.h; sourceTree = "<group>"; };
+		A666D93028844F2900A8E33A /* RealtimeAnalyser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealtimeAnalyser.h; sourceTree = "<group>"; };
 		A692D1B6249B56D900E10C4E /* RecorderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecorderViewController.m; sourceTree = "<group>"; };
 		A692D1B7249B56D900E10C4E /* PlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerViewController.h; sourceTree = "<group>"; };
 		A692D1B8249B56D900E10C4E /* AudioPlayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioPlayCell.m; sourceTree = "<group>"; };
@@ -75,11 +89,6 @@
 		A69EF0B924717831007A3736 /* UIView+EXT.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+EXT.h"; sourceTree = "<group>"; };
 		A69EF0BA24717831007A3736 /* UIView+EXT.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+EXT.m"; sourceTree = "<group>"; };
 		A69EF0BC24717942007A3736 /* FileHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileHelper.h; sourceTree = "<group>"; };
-		A69EF0BD24717942007A3736 /* FileHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileHelper.m; sourceTree = "<group>"; };
-		A6A4FB51249A55790005DAAA /* AudioFrequencyView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioFrequencyView.h; sourceTree = "<group>"; };
-		A6A4FB52249A55790005DAAA /* AudioFrequencyView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AudioFrequencyView.m; sourceTree = "<group>"; };
-		A6F88D882498A88000E3ECF7 /* AudioRecorderAnalyzer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioRecorderAnalyzer.h; sourceTree = "<group>"; };
-		A6F88D892498A88000E3ECF7 /* AudioRecorderAnalyzer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AudioRecorderAnalyzer.m; sourceTree = "<group>"; };
 		A6F88D8C2498A8DD00E3ECF7 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -98,17 +107,13 @@
 		A61D15092473C77900E607D0 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				A6557B172462EAE400ED97BC /* AudioServiceDefine.h */,
+				A666D92C28844F2900A8E33A /* Analyser */,
+				A666D91B28844E4800A8E33A /* FeedbackView */,
 				A6557B142462DA8100ED97BC /* AudioPlayer.h */,
-				A6557B152462DA8100ED97BC /* AudioPlayer.m */,
+				A666D91528844E1100A8E33A /* AudioPlayer.mm */,
 				A656B2D6245AF46B00FF6C89 /* AudioRecorder.h */,
-				A656B2D7245AF46B00FF6C89 /* AudioRecorder.m */,
-				A6F88D882498A88000E3ECF7 /* AudioRecorderAnalyzer.h */,
-				A6F88D892498A88000E3ECF7 /* AudioRecorderAnalyzer.m */,
-				A6A4FB51249A55790005DAAA /* AudioFrequencyView.h */,
-				A6A4FB52249A55790005DAAA /* AudioFrequencyView.m */,
-				A62D5CAE24AB29D700609FBD /* FrequencyView.h */,
-				A62D5CAF24AB29D700609FBD /* FrequencyView.m */,
+				A666D91728844E2100A8E33A /* AudioRecorder.mm */,
+				A6557B172462EAE400ED97BC /* AudioServiceDefine.h */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -149,6 +154,33 @@
 			);
 			path = AudioQueueService;
 			sourceTree = "<group>";
+		};
+		A666D91B28844E4800A8E33A /* FeedbackView */ = {
+			isa = PBXGroup;
+			children = (
+				A666D92028844E4800A8E33A /* AudioFrequencyView.h */,
+				A666D92128844E4800A8E33A /* AudioFrequencyView.mm */,
+				A666D92228844E4800A8E33A /* FDRecordFDView.h */,
+				A666D91C28844E4800A8E33A /* FDRecordFDView.mm */,
+				A666D92328844E4800A8E33A /* FDRecordFeedbackView.h */,
+				A666D91E28844E4800A8E33A /* FDRecordFeedbackView.mm */,
+				A666D91F28844E4800A8E33A /* FDRecordPillar.h */,
+				A666D91D28844E4800A8E33A /* FDRecordPillar.mm */,
+			);
+			path = FeedbackView;
+			sourceTree = "<group>";
+		};
+		A666D92C28844F2900A8E33A /* Analyser */ = {
+			isa = PBXGroup;
+			children = (
+				A666D92F28844F2900A8E33A /* AudioBandsInfo.h */,
+				A666D92D28844F2900A8E33A /* AudioBandsInfo.m */,
+				A666D93028844F2900A8E33A /* RealtimeAnalyser.h */,
+				A666D92E28844F2900A8E33A /* RealtimeAnalyser.mm */,
+			);
+			name = Analyser;
+			path = AudioQueueService/Analyser;
+			sourceTree = SOURCE_ROOT;
 		};
 		A692D1B5249B56D900E10C4E /* Other */ = {
 			isa = PBXGroup;
@@ -193,12 +225,12 @@
 		A69EF0B7247177D9007A3736 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				A6528B8C2499C11300382A0D /* AQDumpData.h */,
+				A666D92828844E6F00A8E33A /* AQDumpData.mm */,
+				A69EF0BC24717942007A3736 /* FileHelper.h */,
+				A666D92928844E6F00A8E33A /* FileHelper.mm */,
 				A69EF0B924717831007A3736 /* UIView+EXT.h */,
 				A69EF0BA24717831007A3736 /* UIView+EXT.m */,
-				A69EF0BC24717942007A3736 /* FileHelper.h */,
-				A69EF0BD24717942007A3736 /* FileHelper.m */,
-				A6528B8C2499C11300382A0D /* AQDumpData.h */,
-				A6528B8D2499C11300382A0D /* AQDumpData.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -283,25 +315,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A666D92728844E4800A8E33A /* AudioFrequencyView.mm in Sources */,
+				A666D91828844E2100A8E33A /* AudioRecorder.mm in Sources */,
+				A666D92A28844E6F00A8E33A /* AQDumpData.mm in Sources */,
 				A692D1CF249B56D900E10C4E /* AudioSpectrumPlayer.m in Sources */,
 				A692D1C9249B56D900E10C4E /* RecorderViewController.m in Sources */,
 				A633EBAA249A394D0016C3FE /* AudioPlayerViewController.m in Sources */,
-				A6557B162462DA8100ED97BC /* AudioPlayer.m in Sources */,
 				A692D1D1249B56D900E10C4E /* SpectrumView.m in Sources */,
+				A666D92B28844E6F00A8E33A /* FileHelper.mm in Sources */,
 				A69EF0BB24717831007A3736 /* UIView+EXT.m in Sources */,
-				A656B2D8245AF46B00FF6C89 /* AudioRecorder.m in Sources */,
 				A692D1CA249B56D900E10C4E /* AudioPlayCell.m in Sources */,
-				A6528B8E2499C11300382A0D /* AQDumpData.m in Sources */,
+				A666D92428844E4800A8E33A /* FDRecordFDView.mm in Sources */,
 				A692D1CE249B56D900E10C4E /* PlayerViewController.m in Sources */,
-				A6A4FB53249A55790005DAAA /* AudioFrequencyView.m in Sources */,
+				A666D92628844E4800A8E33A /* FDRecordFeedbackView.mm in Sources */,
+				A666D93228844F2900A8E33A /* RealtimeAnalyser.mm in Sources */,
 				A656B2C5245AE4D800FF6C89 /* ViewController.m in Sources */,
+				A666D91628844E1100A8E33A /* AudioPlayer.mm in Sources */,
+				A666D93128844F2900A8E33A /* AudioBandsInfo.m in Sources */,
 				A692D1D2249B56D900E10C4E /* RealtimeAnalyzer.m in Sources */,
-				A62D5CB024AB29D700609FBD /* FrequencyView.m in Sources */,
 				A656B2BF245AE4D800FF6C89 /* AppDelegate.m in Sources */,
-				A6F88D8A2498A88000E3ECF7 /* AudioRecorderAnalyzer.m in Sources */,
 				A692D1D0249B56D900E10C4E /* AudioSpectrumRecorder.m in Sources */,
 				A656B2D0245AE4D900FF6C89 /* main.m in Sources */,
-				A69EF0BE24717942007A3736 /* FileHelper.m in Sources */,
+				A666D92528844E4800A8E33A /* FDRecordPillar.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

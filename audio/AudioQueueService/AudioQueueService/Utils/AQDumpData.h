@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AQDumpData : NSObject
 
-+(void)dumpActualData:(const char *)des data:(uint8_t *)data dumpLen:(int)dumpLen;
++ (void)dumpActualData:(const char *)des data:(uint8_t *)data dumpLen:(int)dumpLen;
 
 @end
 
