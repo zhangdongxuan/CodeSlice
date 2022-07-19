@@ -35,8 +35,10 @@ static constexpr double kSmoothingTimeConstant = 0.65;
 @property (nonatomic, assign) UInt32 log2FFTSize;
 
 @property (atomic, assign) BOOL bDenyWriteData;
-@property (atomic, assign) UInt32 writeIndex;
-@property (atomic, assign) UInt32 writeLength;
+
+@property (atomic, assign) UInt32 circleHeadIndex;
+@property (atomic, assign) UInt32 circleTailIndex;
+@property (atomic, assign) UInt32 bufferLength;
 
 @property (nonatomic, assign) UInt32 amplitudeLevel;
 @property (nonatomic, assign) BOOL shouldDoFFTAnalysis;
@@ -54,7 +56,10 @@ static constexpr double kSmoothingTimeConstant = 0.65;
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _writeIndex = 0;
+        _circleHeadIndex = 0;
+        _circleTailIndex = 0;
+        _bufferLength = 0;
+        
         _amplitudeLevel = 50;
         _minFrequency = 60;
         _maxFrequency = 9000;
@@ -235,38 +240,38 @@ static constexpr double kSmoothingTimeConstant = 0.65;
 }
 
 - (void)cleanCacheData {
-    _writeIndex = 0;
-    _writeLength = 0;
+    _circleHeadIndex = 0;
+    _bufferLength = 0;
 }
 
 - (void)writeInput:(float *)rawData audioFrameCount:(UInt32)framesToProcess {
     _shouldDoFFTAnalysis = NO;
 
-    float *dest = _inputBuffer + _writeIndex;
+    float *dest = _inputBuffer + _circleHeadIndex;
     float *source = rawData;
 
     // Then save the result in the _inputBuffer at the appropriate place.
-    if (_writeIndex + framesToProcess > InputBufferSize) {
-        int length = InputBufferSize - _writeIndex;
+    if (_circleHeadIndex + framesToProcess > InputBufferSize) {
+        int length = InputBufferSize - _circleHeadIndex;
         memcpy(dest, source, sizeof(float) * length);
 
         dest = _inputBuffer;
         source = rawData + length;
         length = framesToProcess - length;
         memcpy(dest, source, sizeof(float) * length);
-        _writeIndex = length;
+        _circleHeadIndex = length;
 
     } else {
         memcpy(dest, source, sizeof(float) * framesToProcess);
 
-        _writeIndex += framesToProcess;
-        if (_writeIndex >= InputBufferSize) {
-            _writeIndex = 0;
+        _circleHeadIndex += framesToProcess;
+        if (_circleHeadIndex == InputBufferSize) {
+            _circleHeadIndex = 0;
         }
     }
 
-    _writeLength += framesToProcess;
-    NSLog(@"_writeLength:%u", _writeLength);
+    _bufferLength += framesToProcess;
+    NSLog(@"_writeLength:%u", _bufferLength);
 
     // A new render quantum has been processed so we should do the FFT analysis again.
     _shouldDoFFTAnalysis = YES;
@@ -318,23 +323,28 @@ static constexpr double kSmoothingTimeConstant = 0.65;
 
     // Unroll the input buffer into a temporary buffer, where we'll apply an analysis window followed by an FFT.
     int fftSize = self.fftSize;
-    unsigned writeIndex = _writeIndex;
-
-    if (_writeLength < fftSize) {
+    if (_bufferLength < fftSize) {
         return NO;
     }
 
     // Take the previous fftSize values from the input buffer and copy into the temporary buffer.
     float *inputBuffer = _inputBuffer;
     float *tempP = (float *)malloc(fftSize * sizeof(float));
-
-    if (writeIndex < fftSize) {
-        memcpy(tempP, inputBuffer + writeIndex - fftSize + InputBufferSize, sizeof(float) * (fftSize - writeIndex));
-        memcpy(tempP + fftSize - writeIndex, inputBuffer, sizeof(float) * writeIndex);
+    UInt32 tailLength = InputBufferSize - _circleTailIndex;
+    
+    if (tailLength < fftSize) {
+        memcpy(tempP, inputBuffer + _circleTailIndex, sizeof(float) * (tailLength));
+        memcpy(tempP + tailLength, inputBuffer, sizeof(float) * (fftSize - tailLength));
+        
+        _circleTailIndex = fftSize - tailLength;
     } else {
-        memcpy(tempP, inputBuffer + writeIndex - fftSize, sizeof(float) * fftSize);
+        memcpy(tempP, inputBuffer + _circleTailIndex, sizeof(float) * fftSize);
+        _circleTailIndex += fftSize;
     }
 
+    // 减去被消耗缓冲
+    _bufferLength -= fftSize;
+    
     // Window the input samples.
     vDSP_vmul(tempP, 1, _hannwindow, 1, tempP, 1, fftSize);
 

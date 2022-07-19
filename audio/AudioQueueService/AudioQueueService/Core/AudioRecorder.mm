@@ -41,8 +41,6 @@ static void HandleInputBuffer(void *inUserData,
     }
 
     NSTimeInterval recordTime = inStartTime->mSampleTime / recorder->mAqState.mDataFormat.mSampleRate;
-    //    NSLog(@"inNumPackets:%d record time:%f", inNumPackets, recordTime);
-
     if (inNumPackets > 0) {
         [recorder outputPcmBuffer:inBuffer recordTime:recordTime];
     }
