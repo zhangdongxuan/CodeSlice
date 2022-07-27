@@ -29,6 +29,8 @@ static constexpr double kSmoothingTimeConstant = 0.65;
     //创建权重数组
     Float32 *_loudnessWeights;
     Float32 *_spectrum;
+    
+    Float32 *_tmpAmplitudes;
 }
 
 @property (nonatomic, assign) UInt32 fftSize;
@@ -36,8 +38,8 @@ static constexpr double kSmoothingTimeConstant = 0.65;
 
 @property (atomic, assign) BOOL bDenyWriteData;
 
-@property (atomic, assign) UInt32 circleHeadIndex;
-@property (atomic, assign) UInt32 circleTailIndex;
+@property (atomic, assign) UInt32 circleWriteIndex;
+@property (atomic, assign) UInt32 circleReadIndex;
 @property (atomic, assign) UInt32 bufferLength;
 
 @property (nonatomic, assign) UInt32 amplitudeLevel;
@@ -56,8 +58,8 @@ static constexpr double kSmoothingTimeConstant = 0.65;
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _circleHeadIndex = 0;
-        _circleTailIndex = 0;
+        _circleWriteIndex = 0;
+        _circleReadIndex = 0;
         _bufferLength = 0;
         
         _amplitudeLevel = 50;
@@ -90,7 +92,8 @@ static constexpr double kSmoothingTimeConstant = 0.65;
         _frame.imagp = _imagData;
 
         _amplitudes = (Float32 *)malloc(_fftSize / 2 * sizeof(Float32));
-
+        _tmpAmplitudes  = (Float32 *)malloc(_fftSize / 2 * sizeof(Float32));
+        
         [self updateSampleRate:sampleRate];
     }
 
@@ -240,33 +243,34 @@ static constexpr double kSmoothingTimeConstant = 0.65;
 }
 
 - (void)cleanCacheData {
-    _circleHeadIndex = 0;
+    _circleReadIndex = 0;
+    _circleWriteIndex = 0;
     _bufferLength = 0;
 }
 
 - (void)writeInput:(float *)rawData audioFrameCount:(UInt32)framesToProcess {
     _shouldDoFFTAnalysis = NO;
 
-    float *dest = _inputBuffer + _circleHeadIndex;
+    float *dest = _inputBuffer + _circleWriteIndex;
     float *source = rawData;
 
     // Then save the result in the _inputBuffer at the appropriate place.
-    if (_circleHeadIndex + framesToProcess > InputBufferSize) {
-        int length = InputBufferSize - _circleHeadIndex;
+    if (_circleWriteIndex + framesToProcess > InputBufferSize) {
+        int length = InputBufferSize - _circleWriteIndex;
         memcpy(dest, source, sizeof(float) * length);
 
         dest = _inputBuffer;
         source = rawData + length;
         length = framesToProcess - length;
         memcpy(dest, source, sizeof(float) * length);
-        _circleHeadIndex = length;
+        _circleWriteIndex = length;
 
     } else {
         memcpy(dest, source, sizeof(float) * framesToProcess);
 
-        _circleHeadIndex += framesToProcess;
-        if (_circleHeadIndex == InputBufferSize) {
-            _circleHeadIndex = 0;
+        _circleWriteIndex += framesToProcess;
+        if (_circleWriteIndex == InputBufferSize) {
+            _circleWriteIndex = 0;
         }
     }
 
@@ -277,9 +281,27 @@ static constexpr double kSmoothingTimeConstant = 0.65;
     _shouldDoFFTAnalysis = YES;
 }
 
-- (void)getFloatFrequencWithBands:(UInt32)count completion:(void (^)(NSData *spectrum))completion {
+- (void)readBufferWithSize:(int)fftSize tempP:(float *)tempP {
+    float *inputBuffer = _inputBuffer;
+    UInt32 tailLength = InputBufferSize - _circleReadIndex;
+    
+    if (tailLength < fftSize) {
+        memcpy(tempP, inputBuffer + _circleReadIndex, sizeof(float) * (tailLength));
+        memcpy(tempP + tailLength, inputBuffer, sizeof(float) * (fftSize - tailLength));
+        
+        _circleReadIndex = fftSize - tailLength;
+    } else {
+        memcpy(tempP, inputBuffer + _circleReadIndex, sizeof(float) * fftSize);
+        _circleReadIndex += fftSize;
+    }
+    
+    // 减去被消耗缓冲
+    _bufferLength -= fftSize;
+}
+
+- (void)getFloatFrequencWithBands:(UInt32)count completion:(void (^)(NSData *spectrum, NSData *amplitudesData))completion {
     if (_bDenyWriteData) {
-        completion(NULL);
+        completion(NULL, NULL);
         return;
     }
 
@@ -288,12 +310,14 @@ static constexpr double kSmoothingTimeConstant = 0.65;
         __strong typeof(weakSelf) strongSelf = weakSelf;
         [strongSelf updateFrequencyBandsCount:count];
         BOOL ret = [strongSelf doFFTAnalysisIfNecessary];
-
+        
         if (ret && strongSelf->_spectrum) {
+            
+            NSData *amplitudesData = [NSData dataWithBytes:strongSelf->_amplitudes length:strongSelf.fftSize / 2 * sizeof(Float32)];
             NSData *data = [NSData dataWithBytes:strongSelf->_spectrum length:sizeof(float) * count];
-            completion(data);
+            completion(data, amplitudesData);
         } else {
-            completion(nil);
+            completion(NULL, NULL);
         }
     });
 }
@@ -316,7 +340,6 @@ static constexpr double kSmoothingTimeConstant = 0.65;
         return NO;
     }
 
-    NSLog(@"_shouldDoFFTAnalysis:%u", _shouldDoFFTAnalysis);
     if (_shouldDoFFTAnalysis == NO) {
         return NO;
     }
@@ -328,28 +351,13 @@ static constexpr double kSmoothingTimeConstant = 0.65;
     }
 
     // Take the previous fftSize values from the input buffer and copy into the temporary buffer.
-    float *inputBuffer = _inputBuffer;
     float *tempP = (float *)malloc(fftSize * sizeof(float));
-    UInt32 tailLength = InputBufferSize - _circleTailIndex;
+    [self readBufferWithSize:fftSize tempP:tempP];
     
-    if (tailLength < fftSize) {
-        memcpy(tempP, inputBuffer + _circleTailIndex, sizeof(float) * (tailLength));
-        memcpy(tempP + tailLength, inputBuffer, sizeof(float) * (fftSize - tailLength));
-        
-        _circleTailIndex = fftSize - tailLength;
-    } else {
-        memcpy(tempP, inputBuffer + _circleTailIndex, sizeof(float) * fftSize);
-        _circleTailIndex += fftSize;
-    }
-
-    // 减去被消耗缓冲
-    _bufferLength -= fftSize;
-    
-    // Window the input samples.
+    // Window the input samples. https://blog.csdn.net/weixin_42788078/article/details/92762112  怎样用通俗易懂的方式解释窗函数 https://www.zhihu.com/question/50402321
     vDSP_vmul(tempP, 1, _hannwindow, 1, tempP, 1, fftSize);
 
     int halfSize = fftSize / 2;
-
     float value = 0;
     vDSP_vfill(&value, _frame.imagp, 1, fftSize / 2);
     vDSP_vfill(&value, _frame.realp, 1, fftSize / 2);
@@ -369,7 +377,7 @@ static constexpr double kSmoothingTimeConstant = 0.65;
     // Normalize so than an input sine wave at 0dBfs registers as 0dBfs (undo FFT scaling factor).
     //    https://blog.csdn.net/seekyong/article/details/104434128
     //    https://zhuanlan.zhihu.com/p/137433994   当输入样点数据为复数时除以N
-    float magnitudeScale = 1.0 / fftSize;
+    float magnitudeScale = 2.0 / fftSize;
 
     // To provide the best possible execution speeds, the vDSP library's functions don't always adhere strictly
     // to textbook formulas for Fourier transforms, and must be scaled accordingly.
@@ -404,16 +412,17 @@ static constexpr double kSmoothingTimeConstant = 0.65;
     }
 
     int length = _fftSize / 2;
-
+    
     // 添加声响权重
-    vDSP_vmul(_amplitudes, 1, _loudnessWeights, 1, _amplitudes, 1, length);
-
+    vDSP_vmul(_amplitudes, 1, _loudnessWeights, 1, _tmpAmplitudes, 1, length);
+    Float32 *amplitudes = _tmpAmplitudes;
+    
     //3: findMaxAmplitude函数将从新的`weightedAmplitudes`中查找最大值
     Float32 *spectrum = (Float32 *)malloc(_bandsCount * sizeof(Float32));
 
     for (int i = 0; i < _bandsCount; i++) {
         AudioBandsInfo *brandInfo = [_arrFrequencyBands objectAtIndex:i];
-        float maxAmplitude = [brandInfo getMaxAmplitude:_amplitudes length:length];
+        float maxAmplitude = [brandInfo getMaxAmplitude:amplitudes length:length];
         float result = maxAmplitude * _amplitudeLevel; //amplitudeLevel 调整动画幅度
         spectrum[i] = result;
     }
@@ -424,7 +433,8 @@ static constexpr double kSmoothingTimeConstant = 0.65;
     if (_spectrum != NULL) {
         free(_spectrum);
     }
-
+    
+//    free(amplitudes);
     _spectrum = spectrum;
 }
 

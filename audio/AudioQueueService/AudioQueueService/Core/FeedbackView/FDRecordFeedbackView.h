@@ -21,7 +21,6 @@ static const CGFloat kPillarSmallMaxHeight = 30;
 
 - (instancetype)initFrequencyViewWithFrame:(CGRect)frame;
 - (void)updateFrequencyData:(NSData *)frequency;
-- (void)setAnalyser:(RealtimeAnalyser *)analyser;
 
 @end
 

@@ -204,17 +204,16 @@
 }
 
 - (void)onDisplayLinkCallback {
-    [self.analyzer getFloatFrequencWithBands:kPillarCount
-                                  completion:^(NSData *spectrum) {
-                                      if (spectrum == nil) {
-                                          return;
-                                      }
-
-                                      dispatch_async(dispatch_get_main_queue(), ^{
-                                          [self.frequencyView updateFrequencyData:spectrum];
-                                          [self.originFrequencyView updateFrequencyData:spectrum];
-                                      });
-                                  }];
+    [self.analyzer getFloatFrequencWithBands:kPillarCount completion:^(NSData  *spectrum, NSData *amplitudesData) {
+        if (spectrum == nil) {
+            return;
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.frequencyView updateFrequencyData:spectrum];
+            [self.originFrequencyView updateFrequencyData:amplitudesData];
+        });
+    }];
 }
 
 - (void)updateAudioFiles {

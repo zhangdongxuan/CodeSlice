@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)cleanCacheData;
 - (void)updateSampleRate:(UInt32)sampleRate;
 - (void)onRecievePcmData:(NSData *)rawData frameCount:(UInt32)framesToProcess;
-- (void)getFloatFrequencWithBands:(UInt32)count completion:(void (^)(NSData *spectrum))completion;
+- (void)getFloatFrequencWithBands:(UInt32)count completion:(void (^)(NSData *spectrum, NSData *amplitudesData))completion;
 
 @end
 
