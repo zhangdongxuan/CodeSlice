@@ -30,7 +30,8 @@ static constexpr double kSmoothingTimeConstant = 0.65;
     Float32 *_loudnessWeights;
     Float32 *_spectrum;
     
-    Float32 *_tmpAmplitudes;
+    Float32 *_weightsAmplitudes;
+    
 }
 
 @property (nonatomic, assign) UInt32 fftSize;
@@ -92,7 +93,7 @@ static constexpr double kSmoothingTimeConstant = 0.65;
         _frame.imagp = _imagData;
 
         _amplitudes = (Float32 *)malloc(_fftSize / 2 * sizeof(Float32));
-        _tmpAmplitudes  = (Float32 *)malloc(_fftSize / 2 * sizeof(Float32));
+        _weightsAmplitudes  = (Float32 *)malloc(_fftSize / 2 * sizeof(Float32));
         
         [self updateSampleRate:sampleRate];
     }
@@ -185,6 +186,7 @@ static constexpr double kSmoothingTimeConstant = 0.65;
     [self updateFrequencyBandsCount:_bandsCount];
 }
 
+//https://juejin.cn/post/6844903784011792391
 /** 根据FFT的原理， N个音频信号样本参与计算将产生 N/2 个数据（2048/2=1024），其频率分辨率△f= Fs / N = 44100 / 2048 ≈ 21.5hz，而相邻数据的频率间隔是一样的，因此这1024个数据分别代表频率在0hz、21.5hz、43.0hz....22050hz下的振幅。
  奈奎斯特(nyquist)采样定理:  为了不失真地恢复模拟信号，采样频率应该不小于模拟信号频谱中最高频率的2倍。因此我们能采集到的最大频率是 max frequency = sample rate / 2;  根据心理声学，人耳能容易的分辨出100hz和200hz的音调不同，但是很难分辨出8100hz和8200hz的音调不同，尽管它们各自都是相差100hz，
  可以说频率和音调之间的变化并不是呈线性关系，而是某种对数的关系。
@@ -194,15 +196,10 @@ static constexpr double kSmoothingTimeConstant = 0.65;
         return;
     }
 
-    _bandsCount = bandsCount;
-
     if (_spectrum != NULL) {
         free(_spectrum);
         _spectrum = NULL;
     }
-
-    //https://juejin.cn/post/6844903784011792391
-    NSMutableArray *arrFrequencyBands = [NSMutableArray array];
 
     //1：根据起止频谱、频带数量确定增长的倍数：2^n   log2x的意思就是求x是2的多少次幂.
     float n = log2f(_maxFrequency / _minFrequency) / bandsCount;
@@ -211,6 +208,7 @@ static constexpr double kSmoothingTimeConstant = 0.65;
     float upperFrequency = _minFrequency;
     float bandWidth = 1.0 * _sampleRate / _fftSize;
 
+    NSMutableArray *arrFrequencyBands = [NSMutableArray array];
     for (int i = 0; i < bandsCount; i++) {
         upperFrequency = lowerFrequency * powf(2, n);
         if (i == bandsCount - 1) {
@@ -219,10 +217,10 @@ static constexpr double kSmoothingTimeConstant = 0.65;
 
         AudioBandsInfo *brandInfo = [AudioBandsInfo createWith:lowerFrequency upperFrequency:upperFrequency bandWidth:bandWidth];
         [arrFrequencyBands addObject:brandInfo];
-
         lowerFrequency = upperFrequency;
     }
 
+    _bandsCount = bandsCount;
     _arrFrequencyBands = arrFrequencyBands;
 }
 
@@ -313,7 +311,7 @@ static constexpr double kSmoothingTimeConstant = 0.65;
         
         if (ret && strongSelf->_spectrum) {
             
-            NSData *amplitudesData = [NSData dataWithBytes:strongSelf->_amplitudes length:strongSelf.fftSize / 2 * sizeof(Float32)];
+            NSData *amplitudesData = [NSData dataWithBytes:strongSelf->_weightsAmplitudes length:strongSelf.fftSize / 2 * sizeof(Float32)];
             NSData *data = [NSData dataWithBytes:strongSelf->_spectrum length:sizeof(float) * count];
             completion(data, amplitudesData);
         } else {
@@ -413,16 +411,15 @@ static constexpr double kSmoothingTimeConstant = 0.65;
 
     int length = _fftSize / 2;
     
-    // 添加声响权重
-    vDSP_vmul(_amplitudes, 1, _loudnessWeights, 1, _tmpAmplitudes, 1, length);
-    Float32 *amplitudes = _tmpAmplitudes;
+    // 添加声响权重，
+    vDSP_vmul(_amplitudes, 1, _loudnessWeights, 1, _weightsAmplitudes, 1, length);
     
     //3: findMaxAmplitude函数将从新的`weightedAmplitudes`中查找最大值
     Float32 *spectrum = (Float32 *)malloc(_bandsCount * sizeof(Float32));
 
     for (int i = 0; i < _bandsCount; i++) {
         AudioBandsInfo *brandInfo = [_arrFrequencyBands objectAtIndex:i];
-        float maxAmplitude = [brandInfo getMaxAmplitude:amplitudes length:length];
+        float maxAmplitude = [brandInfo getMaxAmplitude:_weightsAmplitudes length:length];
         float result = maxAmplitude * _amplitudeLevel; //amplitudeLevel 调整动画幅度
         spectrum[i] = result;
     }

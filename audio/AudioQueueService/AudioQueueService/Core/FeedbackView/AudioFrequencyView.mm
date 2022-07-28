@@ -73,7 +73,8 @@
     UIBezierPath *leftPath = [UIBezierPath bezierPath];
     for (int i = 0; i < count; i++) {
         float amplitude = frequencyBuffer[i];
-        CGFloat barHeight = amplitude * CGRectGetHeight(self.bounds);
+        amplitude = MIN(1, amplitude);
+        CGFloat barHeight = amplitude * CGRectGetHeight(self.bounds) * 0.8;
         barHeight = MAX(barHeight, 10);
 
         CGFloat x = (CGFloat)i * (self.barWidth + self.space) + self.space + originX;
